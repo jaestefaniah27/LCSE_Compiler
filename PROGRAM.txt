@@ -1,2565 +1,357 @@
-; --- BOOT SECTOR ---
-JMP	#SETUP
+; --- BOOT (0x000) ---
+JMP	#GLOBAL_INIT
 ; --- INTERRUPT VECTOR (0x002) ---
 #ISR
-		LD	.A, [X00]
-		LD	.B, X49
-		CMPE
-		JMPT	#C_BODY_7
-		JMP	#C_NEXT_8
-#C_BODY_7
-		LD	.A, [X01]
-		LD	.B, X30
-		SUB
-		WR	X43
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		WR	X44
-		LD	.A, [X43]
-		LD	.B, X07
-		CMPG
-		JMPT	#IF_T_9
-		JMP	#IF_E_10
-#IF_T_9
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_10
-		LD	.A, [X44]
-		LD	.B, X01
-		CMPG
-		JMPT	#IF_T_11
-		JMP	#IF_E_12
-#IF_T_11
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_12
-		LD	.ACC, [X43]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X44]
-		WRI	X10
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#C_NEXT_8
-		LD	.A, [X00]
-		LD	.B, X41
-		CMPE
-		JMPT	#C_BODY_13
-		JMP	#C_NEXT_14
-#C_BODY_13
-		LD	.A, [X01]
-		LD	.B, X30
-		SUB
-		WR	X43
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		WR	X44
-		LD	.A, [X43]
-		LD	.B, X09
-		CMPG
-		JMPT	#IF_T_15
-		JMP	#IF_E_16
-#IF_T_15
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_16
-		LD	.A, [X44]
-		LD	.B, X09
-		CMPG
-		JMPT	#IF_T_17
-		JMP	#IF_E_18
-#IF_T_17
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_18
-		LD	.ACC, [X43]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X44]
-		WRI	X20
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#C_NEXT_14
-		LD	.A, [X00]
-		LD	.B, X54
-		CMPE
-		JMPT	#C_BODY_19
-		JMP	#C_NEXT_20
-#C_BODY_19
-		LD	.A, [X01]
-		LD	.B, X30
-		CMPL
-		JMPT	#IF_T_21
-		JMP	#IF_E_22
-#IF_T_21
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_22
-		LD	.A, [X01]
-		LD	.B, X32
-		CMPG
-		JMPT	#IF_T_23
-		JMP	#IF_E_24
-#IF_T_23
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_24
-		LD	.A, [X02]
-		LD	.B, X39
-		CMPG
-		JMPT	#IF_T_25
-		JMP	#IF_E_26
-#IF_T_25
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_26
-		LD	.A, [X01]
-		LD	.B, X30
-		SUB
-		WR	X45
-		LD	.A, [X45]
-		LD	.B, X00
-		ADD
-		SHIFTL
-		SHIFTL
-		SHIFTL
-		SHIFTL
-		WR	X45
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		WR	X46
-		LD	.A, [X45]
-		LD	.B, [X46]
-		ADD
-		WR	X31
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#C_NEXT_20
-		LD	.A, [X00]
-		LD	.B, X53
-		CMPE
-		JMPT	#C_BODY_27
-		JMP	#C_NEXT_28
-#C_BODY_27
-		LD	.A, [X01]
-		LD	.B, X54
-		CMPE
-		JMPT	#IF_T_29
-		JMP	#IF_E_30
-#IF_T_29
-		LD	.A, [X31]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		WR	X45
-		LD	.A, [X31]
-		LD	.B, X0F
-		AND
-		WR	X46
-			; Print: %d%d
-		LD	.ACC, [X45]
-		LD	.A, .ACC
-		BIN2ASCII
-		WR	TXBUF0
-		LD	.ACC, [X46]
-		LD	.A, .ACC
-		BIN2ASCII
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_30
-		LD	.A, [X01]
-		LD	.B, X41
-		CMPE
-		JMPT	#IF_T_31
-		JMP	#IF_E_32
-#IF_T_31
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		WR	X43
-		LD	.A, [X43]
-		LD	.B, X09
-		CMPG
-		JMPT	#IF_T_33
-		JMP	#IF_E_34
-#IF_T_33
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_34
-		LD	.ACC, [X43]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X20]
-		WR	X44
-			; Print: A%d
-		LD	.ACC, X41
-		WR	TXBUF0
-		LD	.ACC, [X44]
-		LD	.A, .ACC
-		BIN2ASCII
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_32
-		LD	.A, [X01]
-		LD	.B, X49
-		CMPE
-		JMPT	#IF_T_35
-		JMP	#IF_E_36
-#IF_T_35
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		WR	X43
-		LD	.A, [X43]
-		LD	.B, X07
-		CMPG
-		JMPT	#IF_T_37
-		JMP	#IF_E_38
-#IF_T_37
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_38
-		LD	.ACC, [X43]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X10]
-		WR	X44
-			; Print: I%d
-		LD	.ACC, X49
-		WR	TXBUF0
-		LD	.ACC, [X44]
-		LD	.A, .ACC
-		BIN2ASCII
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_36
-		LD	.A, [X01]
-		LD	.B, X52
-		CMPE
-		JMPT	#IF_T_39
-		JMP	#IF_E_40
-#IF_T_39
-			; Print: BAUD: 
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X55
-		WR	TXBUF0
-		LD	.ACC, X44
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X09]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_41
-		JMP	#IF_E_42
-#IF_T_41
-			; Print: 300 
-		LD	.ACC, X33
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_42
-		LD	.A, [X09]
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_43
-		JMP	#IF_E_44
-#IF_T_43
-			; Print: 1200 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X32
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_44
-		LD	.A, [X09]
-		LD	.B, X02
-		CMPE
-		JMPT	#IF_T_45
-		JMP	#IF_E_46
-#IF_T_45
-			; Print: 2400 
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X34
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_46
-		LD	.A, [X09]
-		LD	.B, X03
-		CMPE
-		JMPT	#IF_T_47
-		JMP	#IF_E_48
-#IF_T_47
-			; Print: 4800 
-		LD	.ACC, X34
-		WR	TXBUF0
-		LD	.ACC, X38
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_48
-		LD	.A, [X09]
-		LD	.B, X04
-		CMPE
-		JMPT	#IF_T_49
-		JMP	#IF_E_50
-#IF_T_49
-			; Print: 9600 
-		LD	.ACC, X39
-		WR	TXBUF0
-		LD	.ACC, X36
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_50
-		LD	.A, [X09]
-		LD	.B, X05
-		CMPE
-		JMPT	#IF_T_51
-		JMP	#IF_E_52
-#IF_T_51
-			; Print: 19200 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X39
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_52
-		LD	.A, [X09]
-		LD	.B, X06
-		CMPE
-		JMPT	#IF_T_53
-		JMP	#IF_E_54
-#IF_T_53
-			; Print: 38400 
-		LD	.ACC, X33
-		WR	TXBUF0
-		LD	.ACC, X38
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X34
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_54
-		LD	.A, [X09]
-		LD	.B, X07
-		CMPE
-		JMPT	#IF_T_55
-		JMP	#IF_E_56
-#IF_T_55
-			; Print: 57600 
-		LD	.ACC, X35
-		WR	TXBUF0
-		LD	.ACC, X37
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X36
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_56
-		LD	.A, [X09]
-		LD	.B, X08
-		CMPE
-		JMPT	#IF_T_57
-		JMP	#IF_E_58
-#IF_T_57
-			; Print: 115200 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X31
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X35
-		WR	TXBUF0
-		LD	.ACC, X32
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_58
-		LD	.A, [X09]
-		LD	.B, X09
-		CMPE
-		JMPT	#IF_T_59
-		JMP	#IF_E_60
-#IF_T_59
-			; Print: 230400 
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X33
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X34
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_60
-			; Print: N_BITS: 
-		LD	.ACC, X4E
-		WR	TXBUF0
-		LD	.ACC, X5F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X49
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X54
-		WR	TXBUF0
-		LD	.ACC, X53
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-			; Print: %d
-		LD	.ACC, [X08]
-		LD	.A, .ACC
-		BIN2ASCII
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-			; Print: STOP: 
-		LD	.ACC, X53
-		WR	TXBUF0
-		LD	.ACC, X54
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X50
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X07]
-		LD	.B, X02
-		CMPE
-		JMPT	#IF_T_61
-		JMP	#IF_E_62
-#IF_T_61
-			; Print: 1 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_62
-		LD	.A, [X07]
-		LD	.B, X03
-		CMPE
-		JMPT	#IF_T_63
-		JMP	#IF_E_64
-#IF_T_63
-			; Print: 1.5 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X2E
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X35
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_64
-		LD	.A, [X07]
-		LD	.B, X04
-		CMPE
-		JMPT	#IF_T_65
-		JMP	#IF_E_66
-#IF_T_65
-			; Print: 2 
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_66
-			; Print: PARITY: 
-		LD	.ACC, X50
-		WR	TXBUF0
-		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X52
-		WR	TXBUF0
-		LD	.ACC, X49
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X54
-		WR	TXBUF0
-		LD	.ACC, X59
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X50]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_67
-		JMP	#IF_E_68
-#IF_T_67
-			; Print: EVEN 
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X56
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X4E
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_68
-		LD	.A, [X50]
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_69
-		JMP	#IF_E_70
-#IF_T_69
-			; Print: ODD 
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X44
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X44
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_70
-		LD	.A, [X50]
-		LD	.B, X02
-		CMPE
-		JMPT	#IF_T_71
-		JMP	#IF_E_72
-#IF_T_71
-			; Print: MARK 
-		LD	.ACC, X4D
-		WR	TXBUF0
-		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X52
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_72
-		LD	.A, [X50]
-		LD	.B, X03
-		CMPE
-		JMPT	#IF_T_73
-		JMP	#IF_E_74
-#IF_T_73
-			; Print: SPACE 
-		LD	.ACC, X53
-		WR	TXBUF0
-		LD	.ACC, X50
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X41
-		WR	TXBUF0
-		LD	.ACC, X43
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_74
-		LD	.A, [X50]
-		LD	.B, X04
-		CMPE
-		JMPT	#IF_T_75
-		JMP	#IF_E_76
-#IF_T_75
-			; Print: NONE 
-		LD	.ACC, X4E
-		WR	TXBUF0
-		LD	.ACC, X4F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X4E
-		WR	TXBUF0
-		LD	.ACC, X45
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_76
-		JMP	#SW_END_6
-#IF_E_40
-#C_NEXT_28
-		LD	.A, [X00]
-		LD	.B, X52
-		CMPE
-		JMPT	#C_BODY_77
-		JMP	#C_NEXT_78
-#C_BODY_77
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		WR	X44
-		LD	.A, [X01]
-		LD	.B, X39
-		CMPE
-		JMPT	#IF_T_79
-		JMP	#IF_E_80
-#IF_T_79
-		LD	.A, [X44]
-		LD	.B, X09
-		CMPG
-		JMPT	#IF_T_81
-		JMP	#IF_E_82
-#IF_T_81
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_82
-			; Print: BAUD: 
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X55
-		WR	TXBUF0
-		LD	.ACC, X44
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X02]
-		LD	.B, X30
-		CMPE
-		JMPT	#IF_T_83
-		JMP	#IF_E_84
-#IF_T_83
-			; Print: 300 
-		LD	.ACC, X33
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_84
-		LD	.A, [X02]
-		LD	.B, X31
-		CMPE
-		JMPT	#IF_T_85
-		JMP	#IF_E_86
-#IF_T_85
-			; Print: 1200 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X32
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_86
-		LD	.A, [X02]
-		LD	.B, X32
-		CMPE
-		JMPT	#IF_T_87
-		JMP	#IF_E_88
-#IF_T_87
-			; Print: 2400 
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X34
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_88
-		LD	.A, [X02]
-		LD	.B, X33
-		CMPE
-		JMPT	#IF_T_89
-		JMP	#IF_E_90
-#IF_T_89
-			; Print: 4800 
-		LD	.ACC, X34
-		WR	TXBUF0
-		LD	.ACC, X38
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_90
-		LD	.A, [X02]
-		LD	.B, X34
-		CMPE
-		JMPT	#IF_T_91
-		JMP	#IF_E_92
-#IF_T_91
-			; Print: 9600 
-		LD	.ACC, X39
-		WR	TXBUF0
-		LD	.ACC, X36
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_92
-		LD	.A, [X02]
-		LD	.B, X35
-		CMPE
-		JMPT	#IF_T_93
-		JMP	#IF_E_94
-#IF_T_93
-			; Print: 19200 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X39
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_94
-		LD	.A, [X02]
-		LD	.B, X36
-		CMPE
-		JMPT	#IF_T_95
-		JMP	#IF_E_96
-#IF_T_95
-			; Print: 38400 
-		LD	.ACC, X33
-		WR	TXBUF0
-		LD	.ACC, X38
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X34
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_96
-		LD	.A, [X02]
-		LD	.B, X37
-		CMPE
-		JMPT	#IF_T_97
-		JMP	#IF_E_98
-#IF_T_97
-			; Print: 57600 
-		LD	.ACC, X35
-		WR	TXBUF0
-		LD	.ACC, X37
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X36
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_98
-		LD	.A, [X02]
-		LD	.B, X38
-		CMPE
-		JMPT	#IF_T_99
-		JMP	#IF_E_100
-#IF_T_99
-			; Print: 115200 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X31
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X35
-		WR	TXBUF0
-		LD	.ACC, X32
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_100
-		LD	.A, [X02]
-		LD	.B, X39
-		CMPE
-		JMPT	#IF_T_101
-		JMP	#IF_E_102
-#IF_T_101
-			; Print: 230400 
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X33
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X34
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X30
-		WR	TXBUF0
-		LD	.ACC, X30
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_102
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		LD	.ACC, [X44]
-		WR	X09
-		JMP	#SW_END_6
-#IF_E_80
-		LD	.A, [X01]
-		LD	.B, X38
-		CMPE
-		JMPT	#IF_T_103
-		JMP	#IF_E_104
-#IF_T_103
-		LD	.A, [X44]
-		LD	.B, X05
-		CMPL
-		JMPT	#IF_T_105
-		JMP	#IF_E_106
-#IF_T_105
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_106
-		LD	.A, [X44]
-		LD	.B, X08
-		CMPG
-		JMPT	#IF_T_107
-		JMP	#IF_E_108
-#IF_T_107
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_108
-			; Print: N_BITS: 
-		LD	.ACC, X4E
-		WR	TXBUF0
-		LD	.ACC, X5F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X49
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X54
-		WR	TXBUF0
-		LD	.ACC, X53
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-			; Print: %d
-		LD	.A, [X02]
-		LD	.B, X30
-		SUB
-		LD	.A, .ACC
-		BIN2ASCII
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		LD	.ACC, [X44]
-		WR	X08
-		JMP	#SW_END_6
-#IF_E_104
-		LD	.A, [X01]
-		LD	.B, X37
-		CMPE
-		JMPT	#IF_T_109
-		JMP	#IF_E_110
-#IF_T_109
-		LD	.A, [X44]
-		LD	.B, X02
-		CMPL
-		JMPT	#IF_T_111
-		JMP	#IF_E_112
-#IF_T_111
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_112
-		LD	.A, [X44]
-		LD	.B, X04
-		CMPG
-		JMPT	#IF_T_113
-		JMP	#IF_E_114
-#IF_T_113
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_114
-			; Print: STOP: 
-		LD	.ACC, X53
-		WR	TXBUF0
-		LD	.ACC, X54
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X50
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X02]
-		LD	.B, X32
-		CMPE
-		JMPT	#IF_T_115
-		JMP	#IF_E_116
-#IF_T_115
-			; Print: 1 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_116
-		LD	.A, [X02]
-		LD	.B, X33
-		CMPE
-		JMPT	#IF_T_117
-		JMP	#IF_E_118
-#IF_T_117
-			; Print: 1.5 
-		LD	.ACC, X31
-		WR	TXBUF0
-		LD	.ACC, X2E
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X35
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_118
-		LD	.A, [X02]
-		LD	.B, X34
-		CMPE
-		JMPT	#IF_T_119
-		JMP	#IF_E_120
-#IF_T_119
-			; Print: 2 
-		LD	.ACC, X32
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_120
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		LD	.ACC, [X44]
-		WR	X07
-		JMP	#SW_END_6
-#IF_E_110
-		LD	.A, [X01]
-		LD	.B, X36
-		CMPE
-		JMPT	#IF_T_121
-		JMP	#IF_E_122
-#IF_T_121
-		LD	.A, [X44]
-		LD	.B, X04
-		CMPG
-		JMPT	#IF_T_123
-		JMP	#IF_E_124
-#IF_T_123
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#IF_E_124
-			; Print: PARITY: 
-		LD	.ACC, X50
-		WR	TXBUF0
-		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X52
-		WR	TXBUF0
-		LD	.ACC, X49
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X54
-		WR	TXBUF0
-		LD	.ACC, X59
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X3A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X02]
-		LD	.B, X30
-		CMPE
-		JMPT	#IF_T_125
-		JMP	#IF_E_126
-#IF_T_125
-			; Print: EVEN 
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X56
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X4E
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_126
-		LD	.A, [X02]
-		LD	.B, X31
-		CMPE
-		JMPT	#IF_T_127
-		JMP	#IF_E_128
-#IF_T_127
-			; Print: ODD 
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X44
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X44
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_128
-		LD	.A, [X02]
-		LD	.B, X32
-		CMPE
-		JMPT	#IF_T_129
-		JMP	#IF_E_130
-#IF_T_129
-			; Print: MARK 
-		LD	.ACC, X4D
-		WR	TXBUF0
-		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X52
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_130
-		LD	.A, [X02]
-		LD	.B, X33
-		CMPE
-		JMPT	#IF_T_131
-		JMP	#IF_E_132
-#IF_T_131
-			; Print: SPACE 
-		LD	.ACC, X53
-		WR	TXBUF0
-		LD	.ACC, X50
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X41
-		WR	TXBUF0
-		LD	.ACC, X43
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_132
-		LD	.A, [X02]
-		LD	.B, X34
-		CMPE
-		JMPT	#IF_T_133
-		JMP	#IF_E_134
-#IF_T_133
-			; Print: NONE 
-		LD	.ACC, X4E
-		WR	TXBUF0
-		LD	.ACC, X4F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X4E
-		WR	TXBUF0
-		LD	.ACC, X45
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-#IF_E_134
-			; Print: OK
-		LD	.ACC, X4F
-		WR	TXBUF0
-		LD	.ACC, X4B
-		WR	TXBUF1
-		SEND
-		LD	.ACC, [X44]
-		WR	X50
-		JMP	#SW_END_6
-#IF_E_122
-			; Print: ER
-		LD	.ACC, X45
-		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
-		SEND
-		JMP	#SW_END_6
-#C_NEXT_78
-#SW_END_6
 		RETI
-; --- MAIN PROGRAM ---
-#SETUP
+; --- GLOBAL INIT ---
+#GLOBAL_INIT
 		LD	.ACC, X00
-		WR	X4F
-		LD	.ACC, X04
 		WR	X50
-		LD	.ACC, X02
-		WR	X07
-		LD	.ACC, X08
-		WR	X08
-		LD	.ACC, X08
-		WR	X09
-		LD	.ACC, X10
-		WR	X31
-		LD	.ACC, X00
-		LD	.INDEX, .ACC
-		LD	.ACC, X00
-		WRI	X20
-		LD	.ACC, X00
-		LD	.INDEX, .ACC
-		LD	.ACC, X00
-		WRI	X10
-		LD	.ACC, X00
-		WR	X03
-			; Dynamic GPIO Write: leds_state
-		LD	.ACC, [X4C]
+		LD	.ACC, X01
 		WR	X51
 		LD	.ACC, X00
 		WR	X52
-		LD	.ACC, [X51]
+		LD	.ACC, X00
 		WR	X53
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		CMPL
-		JMPT	#CALC_OK_3
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		CMPL
-		JMPT	#TRY_M_1
-#TRY_H_2
-		LD	.ACC, X02
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		SUB
-		WR	X53
-		JMP	#CALC_OK_3
-#TRY_M_1
 		LD	.ACC, X01
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		SUB
-		WR	X53
-#CALC_OK_3
-		LD	.ACC, X01
-		WR	X54
-#S_LOOP_4
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#S_END_5
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, X00
-		ADD
-		SHIFTL
-		WR	X54
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X01
-		SUB
-		WR	X53
-		JMP	#S_LOOP_4
-#S_END_5
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X1B]
-		WR	X41
-		LD	.ACC, [X54]
-		LD	.B, .ACC
-		LD	.ACC, [X41]
-		LD	.A, .ACC
-		OR
-		WR	X41
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X41]
-		WRI	X1B
-			; Print: SYSTEM READY\n
+		WR	X5B
+JMP	#SETUP
+; --- MAIN PROGRAM ---
+#SETUP
 		LD	.ACC, X53
 		WR	TXBUF0
-		LD	.ACC, X59
-		WR	TXBUF1
+		SEND
+		LD	.ACC, X49
+		WR	TXBUF0
 		SEND
 		LD	.ACC, X53
 		WR	TXBUF0
+		SEND
 		LD	.ACC, X54
-		WR	TXBUF1
+		WR	TXBUF0
 		SEND
 		LD	.ACC, X45
 		WR	TXBUF0
+		SEND
 		LD	.ACC, X4D
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
 		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
 		SEND
-		LD	.ACC, X45
-		WR	TXBUF0
 		LD	.ACC, X41
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X44
 		WR	TXBUF0
-		LD	.ACC, X59
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X0A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		JMP	#LOOP_START
-#LOOP_START
-		LD	.A, [X19]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_135
-		JMP	#IF_E_136
-#IF_T_135
-		LD	.A, [X47]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_137
-		JMP	#IF_E_138
-#IF_T_137
-		LD	.ACC, X01
-		WR	X47
-			; Print: Boton UP pulsado\n
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X74
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6E
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X55
-		WR	TXBUF0
-		LD	.ACC, X50
-		WR	TXBUF1
 		SEND
 		LD	.ACC, X20
 		WR	TXBUF0
-		LD	.ACC, X70
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X75
-		WR	TXBUF0
-		LD	.ACC, X6C
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X73
-		WR	TXBUF0
-		LD	.ACC, X61
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X64
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X0A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X31]
-		LD	.B, X29
-		CMPL
-		JMPT	#IF_T_139
-		JMP	#IF_E_140
-#IF_T_139
-		LD	.A, [X31]
-		LD	.B, X01
-		ADD
-		WR	X31
-		LD	.A, [X31]
-		LD	.B, X0F
-		AND
-		WR	X46
-		LD	.A, [X46]
-		LD	.B, X09
-		CMPG
-		JMPT	#IF_T_141
-		JMP	#IF_E_142
-#IF_T_141
-		LD	.A, [X31]
-		LD	.B, X06
-		ADD
-		WR	X31
-#IF_E_142
-#IF_E_140
-#IF_E_138
-#IF_E_136
-		LD	.A, [X19]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_143
-		JMP	#IF_E_144
-#IF_T_143
-		LD	.ACC, X00
-		WR	X47
-#IF_E_144
-		LD	.A, [X1A]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_145
-		JMP	#IF_E_146
-#IF_T_145
-		LD	.A, [X48]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_147
-		JMP	#IF_E_148
-#IF_T_147
-		LD	.ACC, X01
-		WR	X48
-			; Print: Boton DOWN pulsado\n
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X74
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6E
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X44
-		WR	TXBUF0
-		LD	.ACC, X4F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X57
-		WR	TXBUF0
-		LD	.ACC, X4E
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X70
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X75
-		WR	TXBUF0
-		LD	.ACC, X6C
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X73
-		WR	TXBUF0
-		LD	.ACC, X61
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X64
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X0A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X31]
-		LD	.B, X00
-		CMPG
-		JMPT	#IF_T_149
-		JMP	#IF_E_150
-#IF_T_149
-		LD	.A, [X31]
-		LD	.B, X01
-		SUB
-		WR	X31
-		LD	.A, [X31]
-		LD	.B, X0F
-		AND
-		WR	X46
-		LD	.A, [X46]
-		LD	.B, X09
-		CMPG
-		JMPT	#IF_T_151
-		JMP	#IF_E_152
-#IF_T_151
-		LD	.A, [X31]
-		LD	.B, X06
-		SUB
-		WR	X31
-#IF_E_152
-#IF_E_150
-#IF_E_148
-#IF_E_146
-		LD	.A, [X1A]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_153
-		JMP	#IF_E_154
-#IF_T_153
-		LD	.ACC, X00
-		WR	X48
-#IF_E_154
-		LD	.A, [X1A]
-		LD	.B, X00
-		ADD
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_155
-		JMP	#IF_E_156
-#IF_T_155
-		LD	.A, [X49]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_157
-		JMP	#IF_E_158
-#IF_T_157
-		LD	.ACC, X01
-		WR	X49
-			; Print: Boton LEFT pulsado\n
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X74
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6E
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
 		SEND
 		LD	.ACC, X4C
 		WR	TXBUF0
-		LD	.ACC, X45
-		WR	TXBUF1
+		SEND
+		LD	.ACC, X49
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X53
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X54
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X4F
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X3A
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X20
+		WR	TXBUF0
 		SEND
 		LD	.ACC, X46
 		WR	TXBUF0
-		LD	.ACC, X54
-		WR	TXBUF1
 		SEND
-		LD	.ACC, X20
-		WR	TXBUF0
-		LD	.ACC, X70
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X75
-		WR	TXBUF0
-		LD	.ACC, X6C
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X73
-		WR	TXBUF0
-		LD	.ACC, X61
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X64
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X0A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.A, [X4C]
-		LD	.B, X07
-		CMPL
-		JMPT	#IF_T_159
-		JMP	#IF_E_160
-#IF_T_159
-			; Dynamic GPIO Write: leds_state
-		LD	.ACC, [X4C]
-		WR	X51
-		LD	.ACC, X00
-		WR	X52
-		LD	.ACC, [X51]
-		WR	X53
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		CMPL
-		JMPT	#CALC_OK_163
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		CMPL
-		JMPT	#TRY_M_161
-#TRY_H_162
-		LD	.ACC, X02
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		SUB
-		WR	X53
-		JMP	#CALC_OK_163
-#TRY_M_161
-		LD	.ACC, X01
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		SUB
-		WR	X53
-#CALC_OK_163
-		LD	.ACC, X01
-		WR	X54
-#S_LOOP_164
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#S_END_165
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, X00
-		ADD
-		SHIFTL
-		WR	X54
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X01
-		SUB
-		WR	X53
-		JMP	#S_LOOP_164
-#S_END_165
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X1B]
-		WR	X41
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, XFF
-		XOR
-		LD	.B, .ACC
-		LD	.ACC, [X41]
-		LD	.A, .ACC
-		AND
-		WR	X41
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X41]
-		WRI	X1B
-		LD	.A, [X4C]
-		LD	.B, X01
-		ADD
-		WR	X4C
-			; Dynamic GPIO Write: leds_state
-		LD	.ACC, [X4C]
-		WR	X51
-		LD	.ACC, X00
-		WR	X52
-		LD	.ACC, [X51]
-		WR	X53
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		CMPL
-		JMPT	#CALC_OK_168
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		CMPL
-		JMPT	#TRY_M_166
-#TRY_H_167
-		LD	.ACC, X02
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		SUB
-		WR	X53
-		JMP	#CALC_OK_168
-#TRY_M_166
-		LD	.ACC, X01
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		SUB
-		WR	X53
-#CALC_OK_168
-		LD	.ACC, X01
-		WR	X54
-#S_LOOP_169
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#S_END_170
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, X00
-		ADD
-		SHIFTL
-		WR	X54
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X01
-		SUB
-		WR	X53
-		JMP	#S_LOOP_169
-#S_END_170
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X1B]
-		WR	X41
-		LD	.ACC, [X54]
-		LD	.B, .ACC
-		LD	.ACC, [X41]
-		LD	.A, .ACC
-		OR
-		WR	X41
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X41]
-		WRI	X1B
-#IF_E_160
-#IF_E_158
-#IF_E_156
-		LD	.A, [X1A]
-		LD	.B, X00
-		ADD
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_171
-		JMP	#IF_E_172
-#IF_T_171
-		LD	.ACC, X00
-		WR	X49
-#IF_E_172
-		LD	.A, [X1A]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_173
-		JMP	#IF_E_174
-#IF_T_173
-		LD	.A, [X4A]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_175
-		JMP	#IF_E_176
-#IF_T_175
-		LD	.ACC, X01
-		WR	X4A
-			; Print: Boton RIGHT pulsado\n
-		LD	.ACC, X42
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X74
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6E
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X52
-		WR	TXBUF0
 		LD	.ACC, X49
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X47
 		WR	TXBUF0
-		LD	.ACC, X48
-		WR	TXBUF1
 		SEND
-		LD	.ACC, X54
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X70
-		WR	TXBUF0
-		LD	.ACC, X75
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6C
-		WR	TXBUF0
-		LD	.ACC, X73
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X61
-		WR	TXBUF0
-		LD	.ACC, X64
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6F
-		WR	TXBUF0
-		LD	.ACC, X0A
-		WR	TXBUF1
-		SEND
-		LD	.A, [X4C]
-		LD	.B, X00
-		CMPG
-		JMPT	#IF_T_177
-		JMP	#IF_E_178
-#IF_T_177
-			; Dynamic GPIO Write: leds_state
-		LD	.ACC, [X4C]
-		WR	X51
-		LD	.ACC, X00
-		WR	X52
-		LD	.ACC, [X51]
-		WR	X53
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		CMPL
-		JMPT	#CALC_OK_181
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		CMPL
-		JMPT	#TRY_M_179
-#TRY_H_180
-		LD	.ACC, X02
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		SUB
-		WR	X53
-		JMP	#CALC_OK_181
-#TRY_M_179
-		LD	.ACC, X01
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		SUB
-		WR	X53
-#CALC_OK_181
-		LD	.ACC, X01
-		WR	X54
-#S_LOOP_182
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#S_END_183
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, X00
-		ADD
-		SHIFTL
-		WR	X54
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X01
-		SUB
-		WR	X53
-		JMP	#S_LOOP_182
-#S_END_183
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X1B]
-		WR	X41
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, XFF
-		XOR
-		LD	.B, .ACC
-		LD	.ACC, [X41]
-		LD	.A, .ACC
-		AND
-		WR	X41
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X41]
-		WRI	X1B
-		LD	.A, [X4C]
-		LD	.B, X01
-		SUB
-		WR	X4C
-			; Dynamic GPIO Write: leds_state
-		LD	.ACC, [X4C]
-		WR	X51
-		LD	.ACC, X00
-		WR	X52
-		LD	.ACC, [X51]
-		WR	X53
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		CMPL
-		JMPT	#CALC_OK_186
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		CMPL
-		JMPT	#TRY_M_184
-#TRY_H_185
-		LD	.ACC, X02
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X10
-		SUB
-		WR	X53
-		JMP	#CALC_OK_186
-#TRY_M_184
-		LD	.ACC, X01
-		WR	X52
-		LD	.ACC, [X51]
-		LD	.A, .ACC
-		LD	.B, X08
-		SUB
-		WR	X53
-#CALC_OK_186
-		LD	.ACC, X01
-		WR	X54
-#S_LOOP_187
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#S_END_188
-		LD	.ACC, [X54]
-		LD	.A, .ACC
-		LD	.B, X00
-		ADD
-		SHIFTL
-		WR	X54
-		LD	.ACC, [X53]
-		LD	.A, .ACC
-		LD	.B, X01
-		SUB
-		WR	X53
-		JMP	#S_LOOP_187
-#S_END_188
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LDI	.ACC, [X1B]
-		WR	X41
-		LD	.ACC, [X54]
-		LD	.B, .ACC
-		LD	.ACC, [X41]
-		LD	.A, .ACC
-		OR
-		WR	X41
-		LD	.ACC, [X52]
-		LD	.INDEX, .ACC
-		LD	.ACC, [X41]
-		WRI	X1B
-#IF_E_178
-#IF_E_176
-#IF_E_174
-		LD	.A, [X1A]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_189
-		JMP	#IF_E_190
-#IF_T_189
-		LD	.ACC, X00
-		WR	X4A
-#IF_E_190
-		LD	.A, [X19]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X01
-		CMPE
-		JMPT	#IF_T_191
-		JMP	#IF_E_192
-#IF_T_191
-		LD	.A, [X4B]
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_193
-		JMP	#IF_E_194
-#IF_T_193
-		LD	.ACC, X01
-		WR	X4B
-			; Print: Boton CENTER pulsado\n
 		LD	.ACC, X42
 		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
 		SEND
-		LD	.ACC, X74
+		LD	.ACC, X4F
 		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X6E
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X43
-		WR	TXBUF0
-		LD	.ACC, X45
-		WR	TXBUF1
 		SEND
 		LD	.ACC, X4E
 		WR	TXBUF0
-		LD	.ACC, X54
-		WR	TXBUF1
+		SEND
+		LD	.ACC, X41
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X43
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X43
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X49
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X20
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X28
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X46
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X6C
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X61
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X6E
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X63
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X6F
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X73
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X29
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X2E
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X20
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X50
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X55
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X4C
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X53
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X41
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X52
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X20
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X43
+		WR	TXBUF0
 		SEND
 		LD	.ACC, X45
 		WR	TXBUF0
-		LD	.ACC, X52
-		WR	TXBUF1
 		SEND
-		LD	.ACC, X20
+		LD	.ACC, X4E
 		WR	TXBUF0
-		LD	.ACC, X70
-		WR	TXBUF1
+		SEND
+		LD	.ACC, X54
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X52
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X41
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X4C
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X0A
+		WR	TXBUF0
+		SEND
+#LOOP_START
+		LD	.ACC, [X54]
+		WR	X55
+		LD	.ACC, X01
+		WR	X56
+		LD	.A, [X55]
+		LD	.B, [X56]
+		CMPE
+		JMPT	#TRUE_3
+		LD	.ACC, X00
+		JMP	#END_4
+#TRUE_3
+		LD	.ACC, X01
+#END_4
+		WR	X57
+		LD	.ACC, [X53]
+		WR	X58
+		LD	.ACC, X00
+		WR	X59
+		LD	.A, [X58]
+		LD	.B, [X59]
+		CMPE
+		JMPT	#TRUE_5
+		LD	.ACC, X00
+		JMP	#END_6
+#TRUE_5
+		LD	.ACC, X01
+#END_6
+		WR	X5A
+		LD	.A, [X57]
+		LD	.B, [X5A]
+		LD	.A, .ACC
+		LD	.B, X00
+		CMPE
+		JMPT	#ELSE_1
+		LD	.ACC, X00
+		WR	X50
+		LD	.ACC, X01
+		WR	X51
+		LD	.ACC, X53
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X65
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X63
+		WR	TXBUF0
 		SEND
 		LD	.ACC, X75
 		WR	TXBUF0
-		LD	.ACC, X6C
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X73
-		WR	TXBUF0
-		LD	.ACC, X61
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X64
-		WR	TXBUF0
-		LD	.ACC, X6F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X0A
-		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
-		SEND
-			; Print: led_state: %d\n
-		LD	.ACC, X6C
-		WR	TXBUF0
-		LD	.ACC, X65
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X64
-		WR	TXBUF0
-		LD	.ACC, X5F
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X73
-		WR	TXBUF0
-		LD	.ACC, X74
-		WR	TXBUF1
-		SEND
-		LD	.ACC, X61
-		WR	TXBUF0
-		LD	.ACC, X74
-		WR	TXBUF1
 		SEND
 		LD	.ACC, X65
 		WR	TXBUF0
+		SEND
+		LD	.ACC, X6E
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X63
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X69
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X61
+		WR	TXBUF0
+		SEND
 		LD	.ACC, X3A
-		WR	TXBUF1
+		WR	TXBUF0
 		SEND
 		LD	.ACC, X20
 		WR	TXBUF0
-		LD	.ACC, [X4C]
+		SEND
+		LD	.ACC, [X50]
 		LD	.A, .ACC
 		BIN2ASCII
-		WR	TXBUF1
+		WR	TXBUF0
 		SEND
+		LD	.ACC, X2C
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X20
+		WR	TXBUF0
+		SEND
+		LD	.ACC, [X51]
+		LD	.A, .ACC
+		BIN2ASCII
+		WR	TXBUF0
+		SEND
+#WHILE_S_7
+		LD	.ACC, [X5B]
+		WR	X5C
+		LD	.ACC, X01
+		WR	X5D
+		LD	.A, [X5C]
+		LD	.B, [X5D]
+		CMPE
+		JMPT	#TRUE_9
+		LD	.ACC, X00
+		JMP	#END_10
+#TRUE_9
+		LD	.ACC, X01
+#END_10
+		LD	.A, .ACC
+		LD	.B, X00
+		CMPE
+		JMPT	#WHILE_E_8
+		LD	.ACC, [X50]
+		WR	X5E
+		LD	.ACC, [X51]
+		WR	X5F
+		LD	.A, [X5E]
+		LD	.B, [X5F]
+		ADD
+		WR	X52
+		LD	.ACC, [X52]
+		WR	X60
+		LD	.ACC, [X50]
+		WR	X61
+		LD	.A, [X60]
+		LD	.B, [X61]
+		CMPL
+		JMPT	#TRUE_13
+		LD	.ACC, X00
+		JMP	#END_14
+#TRUE_13
+		LD	.ACC, X01
+#END_14
+		LD	.A, .ACC
+		LD	.B, X00
+		CMPE
+		JMPT	#ELSE_11
+		LD	.ACC, X00
+		WR	X5B
+		JMP	#IF_END_12
+#ELSE_11
+		LD	.ACC, X2C
+		WR	TXBUF0
+		SEND
+		LD	.ACC, X20
+		WR	TXBUF0
+		SEND
+		LD	.ACC, [X52]
+		LD	.A, .ACC
+		BIN2ASCII
+		WR	TXBUF0
+		SEND
+		LD	.ACC, [X51]
+		WR	X50
+		LD	.ACC, [X52]
+		WR	X51
+		LD	.ACC, [X50]
+		WR	X62
+		LD	.ACC, X90
+		WR	X63
+		LD	.A, [X62]
+		LD	.B, [X63]
+		CMPG
+		JMPT	#TRUE_17
+		LD	.ACC, X00
+		JMP	#END_18
+#TRUE_17
+		LD	.ACC, X01
+#END_18
+		LD	.A, .ACC
+		LD	.B, X00
+		CMPE
+		JMPT	#ELSE_15
+		LD	.ACC, X00
+		WR	X5B
+		JMP	#IF_END_16
+#ELSE_15
+#IF_END_16
+#IF_END_12
+		JMP	#WHILE_S_7
+#WHILE_E_8
 		LD	.ACC, X0A
 		WR	TXBUF0
-		LD	.ACC, X20
-		WR	TXBUF1
 		SEND
-#IF_E_194
-#IF_E_192
-		LD	.A, [X19]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#IF_T_195
-		JMP	#IF_E_196
-#IF_T_195
-		LD	.ACC, X00
-		WR	X4B
-#IF_E_196
-		LD	.A, [X18]
-		LD	.B, X00
-		ADD
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#G_Z_197
-		LD	.A, [X1C]
-		LD	.B, X01
-		OR
-		WR	X1C
-		JMP	#G_E_198
-#G_Z_197
-		LD	.A, [X1C]
-		LD	.B, XFE
-		AND
-		WR	X1C
-#G_E_198
-		LD	.A, [X18]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#G_Z_199
-		LD	.A, [X1C]
-		LD	.B, X02
-		OR
-		WR	X1C
-		JMP	#G_E_200
-#G_Z_199
-		LD	.A, [X1C]
-		LD	.B, XFD
-		AND
-		WR	X1C
-#G_E_200
-		LD	.A, [X18]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#G_Z_201
-		LD	.A, [X1C]
-		LD	.B, X04
-		OR
-		WR	X1C
-		JMP	#G_E_202
-#G_Z_201
-		LD	.A, [X1C]
-		LD	.B, XFB
-		AND
-		WR	X1C
-#G_E_202
-		LD	.A, [X18]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#G_Z_203
-		LD	.A, [X1C]
-		LD	.B, X08
-		OR
-		WR	X1C
-		JMP	#G_E_204
-#G_Z_203
-		LD	.A, [X1C]
-		LD	.B, XF7
-		AND
-		WR	X1C
-#G_E_204
-		LD	.A, [X18]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#G_Z_205
-		LD	.A, [X1C]
-		LD	.B, X10
-		OR
-		WR	X1C
-		JMP	#G_E_206
-#G_Z_205
-		LD	.A, [X1C]
-		LD	.B, XEF
-		AND
-		WR	X1C
-#G_E_206
-		LD	.A, [X18]
-		LD	.B, X00
-		ADD
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		SHIFTR
-		LD	.A, .ACC
-		LD	.B, X01
-		AND
-		LD	.A, .ACC
-		LD	.B, X00
-		CMPE
-		JMPT	#G_Z_207
-		LD	.A, [X1C]
-		LD	.B, X20
-		OR
-		WR	X1C
-		JMP	#G_E_208
-#G_Z_207
-		LD	.A, [X1C]
-		LD	.B, XDF
-		AND
-		WR	X1C
-#G_E_208
+		JMP	#IF_END_2
+#ELSE_1
+#IF_END_2
+		LD	.ACC, [X54]
+		WR	X53
 		JMP	#LOOP_START
